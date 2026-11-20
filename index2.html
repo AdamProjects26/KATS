@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KATS!</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Handwriting font + clean readable font for rules -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #f67738;
+            color: #fdfdfe;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+        }
+        /* Top Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+        }
+        .logo {
+            width: 90vw;
+            max-width: 720px;
+            aspect-ratio: 3 / 1;
+            background-image: url('banner.webp');
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: #fdfdfe;
+            line-height: 1;
+            margin-bottom: 1.75rem;
+        }
+        .join-btn {
+            display: inline-block;
+            background-color: #fdfdfe;
+            color: #f67738;
+            font-family: 'Caveat', cursive, sans-serif;
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: 700;
+            padding: 0.7rem 2.6rem;
+            border-radius: 9999px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .join-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 1.5rem;
+            color: #fdfdfe;
+            text-decoration: none;
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 1.5rem;
+            opacity: 0.85;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .scroll-hint:hover {
+            opacity: 1;
+            transform: translateY(3px);
+        }
+
+        /* Scroll-Down Content */
+        .content {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 5rem;
+        }
+        .tagline-box {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .tagline {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        /* Rules Card */
+        .rules-card {
+            background-color: #fdfdfe;
+            color: #2b211c;
+            border-radius: 28px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+        .rules-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .rules-header h2 {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 3rem;
+            color: #f67738;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+        .rules-header p {
+            font-size: 1.05rem;
+            color: #5c4b43;
+        }
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .rule-item {
+            background-color: #fff6f1;
+            border-left: 5px solid #f67738;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+        }
+        .rule-item h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #f67738;
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.02em;
+        }
+        .rule-item p {
+            font-size: 0.98rem;
+            color: #3d312b;
+        }
+
+        .divider {
+            border: 0;
+            height: 2px;
+            background: rgba(246, 119, 56, 0.2);
+            margin: 2.25rem 0;
+        }
+
+        /* Moderation Section */
+        .moderation h2 {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 2.6rem;
+            color: #f67738;
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+        .moderation > p {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #3d312b;
+        }
+        .consequences-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        .consequences-list li {
+            background-color: #f67738;
+            color: #fdfdfe;
+            font-weight: 700;
+            font-size: 0.92rem;
+            padding: 0.45rem 1rem;
+            border-radius: 9999px;
+        }
+        .mod-note {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #5c4b43;
+            margin-bottom: 0.5rem;
+        }
+        .thanks {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: #f67738;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .rules-card {
+                padding: 1.75rem 1.25rem;
+            }
+            .tagline {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Screen -->
+    <section class="hero">
+        <div class="logo" role="img" aria-label="/kats logo"></div>
+        <h1>KATS!</h1>
+        <a href="https://yapin.gg" target="_blank" rel="noopener noreferrer" class="join-btn">Join /kats</a>
+        <a href="#about" class="scroll-hint">Scroll down for info &amp; rules ↓</a>
+    </section>
+
+    <!-- Tagline & Rules Section -->
+    <main id="about" class="content">
+        <div class="tagline-box">
+            <p class="tagline">The home of silly cat decorations! Get updates on our latest decorations, banners and creations.</p>
+        </div>
+
+        <div class="rules-card">
+            <div class="rules-header">
+                <h2>KATS! — SERVER RULES</h2>
+                <p>Welcome to KATS! Please read and follow all the rules to keep our community friendly and welcoming.</p>
+            </div>
+
+            <div class="rules-list">
+                <div class="rule-item">
+                    <h3>01. RESPECT EVERYONE</h3>
+                    <p>Treat all members with respect. Bullying, harassment, discrimination and personal attacks are not tolerated.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>02. NO SPAM</h3>
+                    <p>Do not spam messages, emojis, stickers, reactions or repeatedly ping members.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>03. NO NSFW CONTENT</h3>
+                    <p>Keep all conversations and media appropriate for a general audience. No NSFW, explicit or inappropriate content.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>04. NO DRAMA</h3>
+                    <p>Avoid starting arguments, provoking members or bringing unnecessary drama into the community.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>05. RESPECT PRIVACY</h3>
+                    <p>Never share someone's personal information, private messages or photos without their permission.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>06. USE CHANNELS CORRECTLY</h3>
+                    <p>Keep conversations in their appropriate channels. Check channel descriptions before posting.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>07. NO BEGGING</h3>
+                    <p>Do not repeatedly beg for roles, promotions, permissions, Nitro or other benefits.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>08. LISTEN TO STAFF</h3>
+                    <p>Follow reasonable instructions from moderators and administrators. Do not argue with staff in public channels.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>09. NO MALICIOUS LINKS</h3>
+                    <p>Do not share suspicious links, scams, phishing attempts or harmful files.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>10. NO IMPERSONATION</h3>
+                    <p>Do not impersonate other members, staff or public figures to mislead others.</p>
+                </div>
+
+                <div class="rule-item">
+                    <h3>11. USE COMMON SENSE</h3>
+                    <p>Not everything can be covered by these rules. Be considerate and use your best judgement.</p>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="moderation">
+                <h2>MODERATION &amp; CONSEQUENCES</h2>
+                <p>Breaking the rules may result in:</p>
+                <ul class="consequences-list">
+                    <li>Verbal warning</li>
+                    <li>Official warning</li>
+                    <li>Timeout</li>
+                    <li>Kick</li>
+                    <li>Temporary ban</li>
+                    <li>Permanent ban</li>
+                </ul>
+                <p class="mod-note">Staff reserve the right to take appropriate action depending on the severity of the situation.</p>
+                <p class="mod-note">By being a member in KATS, you agree to follow these rules.</p>
+                <p class="thanks">Thanks for join KATS! ♡</p>
+            </div>
+
+
