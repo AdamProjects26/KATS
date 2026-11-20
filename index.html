@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KATS!</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <!-- Handwriting font + clean readable font for rules -->
+    <!-- Handwriting font + clean readable font -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
@@ -102,29 +102,32 @@
             line-height: 1.25;
         }
 
-        /* Rules Card */
-        .rules-card {
+        /* Card Containers */
+        .card {
             background-color: #fdfdfe;
             color: #2b211c;
             border-radius: 28px;
             padding: 2.5rem 2rem;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+            margin-bottom: 2.5rem;
         }
-        .rules-header {
+        .section-header {
             text-align: center;
             margin-bottom: 2rem;
         }
-        .rules-header h2 {
+        .section-header h2 {
             font-family: 'Caveat', cursive, sans-serif;
             font-size: 3rem;
             color: #f67738;
             line-height: 1.1;
             margin-bottom: 0.5rem;
         }
-        .rules-header p {
+        .section-header p {
             font-size: 1.05rem;
             color: #5c4b43;
         }
+
+        /* Rules Section */
         .rules-list {
             display: flex;
             flex-direction: column;
@@ -200,8 +203,55 @@
             margin-top: 1.5rem;
         }
 
+        /* FAQ Accordion Section */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        details.faq-item {
+            background-color: #fff6f1;
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            border: 2px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+        details.faq-item[open] {
+            border-color: rgba(246, 119, 56, 0.35);
+        }
+        details.faq-item summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: #f67738;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            letter-spacing: 0.02em;
+        }
+        details.faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        details.faq-item summary::after {
+            content: "⌄";
+            font-size: 1.4rem;
+            line-height: 1;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        details.faq-item[open] summary::after {
+            transform: rotate(180deg);
+        }
+        details.faq-item p {
+            margin-top: 0.65rem;
+            font-size: 0.98rem;
+            color: #3d312b;
+        }
+
         @media (max-width: 600px) {
-            .rules-card {
+            .card {
                 padding: 1.75rem 1.25rem;
             }
             .tagline {
@@ -216,17 +266,18 @@
         <div class="logo" role="img" aria-label="/kats logo"></div>
         <h1>KATS!</h1>
         <a href="https://yapin.gg" target="_blank" rel="noopener noreferrer" class="join-btn">Join /kats</a>
-        <a href="#about" class="scroll-hint">Scroll down for info &amp; rules ↓</a>
+        <a href="#about" class="scroll-hint">Scroll down for info, rules &amp; FAQ ↓</a>
     </section>
 
-    <!-- Tagline & Rules Section -->
+    <!-- Tagline, Rules & FAQ Section -->
     <main id="about" class="content">
         <div class="tagline-box">
             <p class="tagline">The home of silly cat decorations! Get updates on our latest decorations, banners and creations.</p>
         </div>
 
-        <div class="rules-card">
-            <div class="rules-header">
+        <!-- Server Rules Card -->
+        <div class="card">
+            <div class="section-header">
                 <h2>KATS! — SERVER RULES</h2>
                 <p>Welcome to KATS! Please read and follow all the rules to keep our community friendly and welcoming.</p>
             </div>
@@ -257,6 +308,8 @@
                     <p>Never share someone's personal information, private messages or photos without their permission.</p>
                 </div>
 
+                <div class="rule-item">
+                    <h3>06. USE CHANNELS CORRECTLY</h3>
                 <div class="rule-item">
                     <h3>06. USE CHANNELS CORRECTLY</h3>
                     <p>Keep conversations in their appropriate channels. Check channel descriptions before posting.</p>
@@ -305,5 +358,68 @@
                 <p class="mod-note">By being a member in KATS, you agree to follow these rules.</p>
                 <p class="thanks">Thanks for join KATS! ♡</p>
             </div>
+        </div>
 
+        <!-- FAQ Card -->
+        <div class="card">
+            <div class="section-header">
+                <h2>FREQUENTLY ASKED QUESTIONS</h2>
+                <p>Click a question below to see the answer!</p>
+            </div>
+
+            <div class="faq-list">
+                <details class="faq-item" open>
+                    <summary>IS THIS THE OFFICIAL SERVER FOR SILLY CAT DECORATIONS?</summary>
+                    <p>Yes! This is the official home of Silly Cat Decorations, where you can find updates on our latest profile decorations, banners, effects and other creations!</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>WHAT IS KATS?</summary>
+                    <p>KATS is a community server where people can chat, make friends and keep up with our latest silly cat decorations!</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>WHO ARE THE OWNERS?</summary>
+                    <p>The owners are alonis. and MalnourishedPot.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>HOW DO I GET UPDATES?</summary>
+                    <p>Keep an eye on our announcement channels to see when new decorations and creations are released!</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>HOW DO I GET NOTIFICATION PINGS?</summary>
+                    <p>Click the server name, head to Ping Roles, and claim whichever notification roles you'd like!</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>CAN I SUGGEST NEW DECORATIONS?</summary>
+                    <p>Of course! Share your ideas and suggestions with us. We love hearing new ideas!</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>CAN I INVITE MY FRIENDS?</summary>
+                    <p>Absolutely! Feel free to invite your friends and help grow the KATS community.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>HOW DO I BECOME STAFF?</summary>
+                    <p>Keep an eye out for staff application announcements. Applications may open when positions become available.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>CAN I PROMOTE MY OWN SERVER?</summary>
+                    <p>Of course! But please do not spam the same advertisement or any other advertisements, just one at a time.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>WHO DO I CONTACT IF I NEED HELP?</summary>
+                    <p>You can contact a moderator or open a support ticket if you need assistance.</p>
+                </details>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
 
