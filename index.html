@@ -85,6 +85,7 @@
             width: 240px;
             height: 240px;
             background-image: url('banner.webp');
+            background-color: var(--bg-main);
             background-position: center;
             background-size: contain;
             background-repeat: no-repeat;
@@ -92,9 +93,18 @@
             margin-bottom: 1rem;
             filter: var(--logo-filter);
             transition: filter 0.25s ease;
+            border: 0;
+            padding: 0;
+            appearance: none;
+            cursor: pointer;
+        }
+        .logo:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 6px;
         }
         body.dark-mode .logo {
             background-image: url('dark.png');
+            background-color: var(--bg-main);
         }
         h1 {
             font-family: 'Caveat', cursive, sans-serif;
@@ -251,6 +261,47 @@
             width: 100%;
             height: auto;
             border-radius: 12px;
+        }
+        .cat-facts-dialog {
+            width: min(90vw, 560px);
+            max-height: 85vh;
+            overflow-y: auto;
+            margin: auto;
+            padding: 2rem;
+            border: 0;
+            border-radius: 24px;
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+        .cat-facts-dialog::backdrop {
+            background: rgba(16, 12, 20, 0.68);
+            backdrop-filter: blur(3px);
+        }
+        .cat-facts-dialog h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font: 700 2.5rem 'Caveat', cursive, sans-serif;
+            text-align: center;
+        }
+        .cat-facts-list {
+            display: grid;
+            gap: 0.8rem;
+            padding-left: 1.25rem;
+        }
+        .cat-facts-list li {
+            padding-left: 0.25rem;
+        }
+        .cat-facts-close {
+            display: block;
+            margin: 1.5rem auto 0;
+            border: 0;
+            border-radius: 9999px;
+            padding: 0.6rem 1.5rem;
+            background: var(--accent);
+            color: #fff;
+            font: 700 1.2rem 'Caveat', cursive, sans-serif;
+            cursor: pointer;
         }
 
         /* Two-Column Layout (Main + Sidebar) */
@@ -539,11 +590,37 @@
     <button id="themeBtn" class="theme-toggle" aria-label="Toggle dark or light mode">🌙 Dark</button>
 
     <section class="hero">
-        <div class="logo" role="img" aria-label="/kats logo"></div>
+        <button id="catLogo" class="logo" type="button" aria-label="KATS cat logo. Double-click for cat fun facts." title="Double-click for cat fun facts"></button>
         <h1>KATS!</h1>
-        <a href="https://yapin.gg" target="_blank" rel="noopener noreferrer" class="join-btn">Join /kats</a>
+        <a href="https://yapin.gg/invite/KATS" target="_blank" rel="noopener noreferrer" class="join-btn">Join /kats</a>
         <a href="#about" class="scroll-hint">Scroll down for info, rules &amp; FAQ ↓</a>
     </section>
+
+    <dialog id="catFactsDialog" class="cat-facts-dialog" aria-labelledby="catFactsHeading">
+        <h2 id="catFactsHeading">🐾 Cat Fun Facts 🐾</h2>
+        <ul class="cat-facts-list">
+            <li>Cats see better than people in low light, but they still need some light to see.</li>
+            <li>A cat’s whiskers help it sense nearby objects and judge whether it can fit through a gap.</li>
+            <li>Cats see a more limited range of colors than humans do.</li>
+            <li>Cats are most active around dawn and dusk. This is called being crepuscular.</li>
+            <li>Many cats sleep for around 12–18 hours a day.</li>
+            <li>A cat can turn each ear toward a different sound, and its ears can rotate widely.</li>
+            <li>Each cat ear has 32 muscles.</li>
+            <li>A cat’s ears can help show how it is feeling. Flattened ears can mean it feels scared or stressed.</li>
+            <li>Most cats have 24 whiskers on their cheeks, usually 12 on each side.</li>
+            <li>Whiskers can sense tiny movements in the air.</li>
+            <li>Whiskers help cats judge whether a narrow opening is wide enough to pass through.</li>
+            <li>Cats have scent glands around their cheeks and paws.</li>
+            <li>When cats scratch, they leave both visible marks and scent signals.</li>
+            <li>A purr often means a cat is content, but cats may also purr when stressed or in pain.</li>
+            <li>Kittens are born with their eyes and ear canals closed; these open as they grow.</li>
+            <li>Cats use scent and body language to communicate with other cats.</li>
+            <li>Many pet cats use meows especially to communicate with people.</li>
+            <li>Cats have a reflective layer in their eyes that helps them see in dim light.</li>
+            <li>Cats have fewer types of color-sensing cone cells than people do.</li>
+        </ul>
+        <button id="closeCatFacts" class="cat-facts-close" type="button">Got it!</button>
+    </dialog>
 
     <main id="about" class="content">
         <div class="tagline-box">
@@ -783,6 +860,17 @@
 
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
+
+        const catLogo = document.getElementById('catLogo');
+        const catFactsDialog = document.getElementById('catFactsDialog');
+        catLogo.addEventListener('dblclick', () => catFactsDialog.showModal());
+        catLogo.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                catFactsDialog.showModal();
+            }
+        });
+        document.getElementById('closeCatFacts').addEventListener('click', () => catFactsDialog.close());
 
         document.getElementById('serverCount').textContent = serverInfo.peopleInServer.toLocaleString();
         document.getElementById('serverMade').textContent = serverInfo.serverMade;
