@@ -197,6 +197,61 @@
             font-size: 1.5rem;
             line-height: 1.25;
         }
+        .announcements-toggle {
+            margin-top: 1rem;
+            border: 0;
+            border-radius: 9999px;
+            padding: 0.65rem 1.6rem;
+            background: var(--surface);
+            color: var(--accent);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            font: 700 1.2rem 'Caveat', cursive, sans-serif;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .announcements-toggle:hover {
+            transform: translateY(-2px);
+        }
+        .announcement-panel {
+            max-width: 760px;
+            margin: 1rem auto 0;
+            padding: 1.5rem;
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-primary);
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+        }
+        .announcement-panel h2 {
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            font: 700 2rem 'Caveat', cursive, sans-serif;
+        }
+        .announcement-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .announcement-author img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .announcement-author-name {
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+        .announcement-panel p {
+            margin-bottom: 0.85rem;
+        }
+        .announcement-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
 
         /* Two-Column Layout (Main + Sidebar) */
         .layout-grid {
@@ -497,6 +552,19 @@
                 <p class="server-count">People in the Server <span id="serverCount" class="server-count-number">119</span></p>
                 <p class="server-age">Server made on <span id="serverMade">08.11.2026</span> <span id="serverAge" class="server-age-number">13 days ago</span></p>
             </div>
+            <button id="announcementsToggle" class="announcements-toggle" type="button" aria-expanded="false" aria-controls="announcementPanel">Announcements</button>
+            <section id="announcementPanel" class="announcement-panel" aria-labelledby="announcementHeading" hidden>
+                <div class="announcement-author">
+                    <img src="alonis.png" alt="">
+                    <div>
+                        <p class="announcement-author-name">alonis.</p>
+                        <h2 id="announcementHeading">1st Announcement: Website Advertising</h2>
+                    </div>
+                </div>
+                <p><strong>@everyone @AdamDev</strong> made a website advertising our server, LIKE WHATTT!!!</p>
+                <p>Everyone spam with AdamDev in the chat!</p>
+                <img class="announcement-image" src="announcement-kats-home.png" alt="Preview of the KATS website home page">
+            </section>
         </div>
 
         <div class="layout-grid">
@@ -728,6 +796,14 @@
             document.getElementById('serverAge').textContent = `${daysSinceCreated} ${daysSinceCreated === 1 ? 'day' : 'days'} ago`;
         }
         updateServerAge(serverInfo.serverMade);
+
+        const announcementsToggle = document.getElementById('announcementsToggle');
+        const announcementPanel = document.getElementById('announcementPanel');
+        announcementsToggle.addEventListener('click', () => {
+            const isOpen = announcementsToggle.getAttribute('aria-expanded') === 'true';
+            announcementsToggle.setAttribute('aria-expanded', String(!isOpen));
+            announcementPanel.hidden = isOpen;
+        });
 
         if (localStorage.getItem('kats-theme') === 'dark') {
             body.classList.add('dark-mode');
