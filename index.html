@@ -261,10 +261,29 @@
             border-radius: 14px;
             padding: 0.8rem 1rem;
             display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.85rem;
             border-left: 4px solid var(--accent);
             transition: background-color 0.25s ease;
+        }
+        .staff-item-with-avatar {
+            flex-direction: row;
+            align-items: center;
+            gap: 0.85rem;
+        }
+        .staff-avatar {
+            width: 52px;
+            height: 52px;
+            flex: 0 0 52px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .staff-details {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            gap: 0.35rem;
         }
         .staff-name {
             font-weight: 800;
@@ -293,6 +312,10 @@
         .role-mod {
             background-color: #f3e8ff;
             color: #7e22ce;
+        }
+        .role-web-manager {
+            background-color: #dbeafe;
+            color: #1d4ed8;
         }
 
         /* Rules Section */
@@ -624,28 +647,51 @@
                 <h2>Who Runs It</h2>
                 <div class="staff-list">
                     <div class="staff-item">
-                        <span class="staff-name">alonis.</span>
-                        <span class="role-badge role-owner">👑 Owner</span>
+                        <img class="staff-avatar" src="alonis.png" alt="alonis.">
+                        <div class="staff-details">
+                            <span class="staff-name">alonis.</span>
+                            <span class="role-badge role-owner">👑 Owner</span>
+                        </div>
                     </div>
 
                     <div class="staff-item">
-                        <span class="staff-name">MalnourishedPot</span>
-                        <span class="role-badge role-kats">🛡️ KATS!</span>
+                        <img class="staff-avatar" src="MalnourishedPot.gif" alt="MalnourishedPot">
+                        <div class="staff-details">
+                            <span class="staff-name">MalnourishedPot</span>
+                            <span class="role-badge role-kats">🛡️ KATS!</span>
+                        </div>
+                    </div>
+
+                    <div class="staff-item staff-item-with-avatar">
+                        <img class="staff-avatar" src="adamdev.webp" alt="AdamDev">
+                        <div class="staff-details">
+                            <span class="staff-name">AdamDev</span>
+                            <span class="role-badge role-web-manager">💻 Web Manager</span>
+                        </div>
                     </div>
 
                     <div class="staff-item">
-                        <span class="staff-name">~ ! M1LKYBUNNYCH0C0 ! ~</span>
-                        <span class="role-badge role-mod">🛡️ Moderator</span>
+                        <img class="staff-avatar" src="~%20!%20M1LKYBUNNYCH0C0%20!%20~.webp" alt="~ ! M1LKYBUNNYCH0C0 ! ~">
+                        <div class="staff-details">
+                            <span class="staff-name">~ ! M1LKYBUNNYCH0C0 ! ~</span>
+                            <span class="role-badge role-mod">🛡️ Moderator</span>
+                        </div>
                     </div>
 
                     <div class="staff-item">
-                        <span class="staff-name">🕶️ LAWLESS ✦</span>
-                        <span class="role-badge role-mod">🛡️ Moderator</span>
+                        <img class="staff-avatar" src="LAWLESS.webp" alt="🕶️ LAWLESS ✦">
+                        <div class="staff-details">
+                            <span class="staff-name">🕶️ LAWLESS ✦</span>
+                            <span class="role-badge role-mod">🛡️ Moderator</span>
+                        </div>
                     </div>
 
                     <div class="staff-item">
-                        <span class="staff-name">JustaKrill</span>
-                        <span class="role-badge role-mod">🛡️ Moderator</span>
+                        <img class="staff-avatar" src="JustaKrill.png" alt="JustaKrill">
+                        <div class="staff-details">
+                            <span class="staff-name">JustaKrill</span>
+                            <span class="role-badge role-mod">🛡️ Moderator</span>
+                        </div>
                     </div>
                 </div>
             </aside>
