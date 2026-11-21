@@ -1,5 +1,16 @@
 [
   {
+    "id": "04b60d12-852b-4689-8a66-a0acee00d4f9",
+    "title": "Announcement",
+    "author": "alonis.",
+    "author_id": "3b92b5a9-8291-4715-80e4-26644f610387",
+    "avatar": "alonis.png",
+    "content": "@everyone our new bot <@a7ff50c3-d264-4ec6-bceb-10c1c66b3cde> is here to help us with the auto moderating and revive chats. \n\nDaisy is currently in beta so everything might be a little bit of chaos for a while, but the team are on it!",
+    "images": [],
+    "created_at": "2026-11-21T23:43:31.881587+00:00",
+    "source": "yapin"
+  },
+  {
     "id": "website-advertising-1",
     "title": "1st Announcement: Website Advertising",
     "author": "alonis.",
