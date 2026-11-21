@@ -232,6 +232,22 @@
             text-align: left;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
         }
+        .announcement-panel > h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font: 700 2.2rem 'Caveat', cursive, sans-serif;
+        }
+        .announcement-entry + .announcement-entry {
+            border-top: 1px solid rgba(128, 128, 128, 0.25);
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+        }
+        .announcement-entry h3 {
+            margin-top: 0.1rem;
+            color: var(--accent);
+            font-size: 1.05rem;
+            line-height: 1.2;
+        }
         .announcement-panel h2 {
             margin-bottom: 0.5rem;
             color: var(--accent);
@@ -255,6 +271,21 @@
         }
         .announcement-panel p {
             margin-bottom: 0.85rem;
+        }
+        .announcement-content {
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+        .announcement-avatar-fallback {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--surface-soft);
+            color: var(--accent);
+            font-weight: 800;
         }
         .announcement-image {
             display: block;
@@ -636,17 +667,10 @@
                 <p class="server-age">Server made on <span id="serverMade">08.11.2026</span> <span id="serverAge" class="server-age-number">13 days ago</span></p>
             </div>
             <button id="announcementsToggle" class="announcements-toggle" type="button" aria-expanded="false" aria-controls="announcementPanel">Announcements</button>
-            <section id="announcementPanel" class="announcement-panel" aria-labelledby="announcementHeading" hidden>
-                <div class="announcement-author">
-                    <img src="alonis.png" alt="">
-                    <div>
-                        <p class="announcement-author-name">alonis.</p>
-                        <h2 id="announcementHeading">1st Announcement: Website Advertising</h2>
-                    </div>
-                </div>
-                <p><strong>@everyone @AdamDev</strong> made a website advertising our server, LIKE WHATTT!!!</p>
-                <p>Everyone spam with AdamDev in the chat!</p>
-                <img class="announcement-image" src="announcement-kats-home.png" alt="Preview of the KATS website home page">
+            <section id="announcementPanel" class="announcement-panel" aria-labelledby="announcementsHeading" hidden>
+                <h2 id="announcementsHeading">Announcements</h2>
+                <div id="announcementList" aria-live="polite"></div>
+                <p id="announcementStatus" class="mod-note">Loading announcements…</p>
             </section>
         </div>
 
@@ -896,10 +920,80 @@
 
         const announcementsToggle = document.getElementById('announcementsToggle');
         const announcementPanel = document.getElementById('announcementPanel');
+        const announcementList = document.getElementById('announcementList');
+        const announcementStatus = document.getElementById('announcementStatus');
+
+        async function loadAnnouncements() {
+            announcementStatus.hidden = false;
+            announcementStatus.textContent = 'Loading announcements…';
+            announcementList.replaceChildren();
+
+            try {
+                const response = await fetch(`announcements.json?updated=${Date.now()}`, { cache: 'no-store' });
+                if (!response.ok) throw new Error('Could not load announcements');
+                const announcements = await response.json();
+                if (!Array.isArray(announcements) || announcements.length === 0) {
+                    announcementStatus.textContent = 'No announcements yet.';
+                    return;
+                }
+
+                for (const item of announcements) {
+                    const entry = document.createElement('article');
+                    entry.className = 'announcement-entry';
+
+                    const authorRow = document.createElement('div');
+                    authorRow.className = 'announcement-author';
+                    const authorName = String(item.author || 'KATS member');
+                    if (item.avatar) {
+                        const avatar = document.createElement('img');
+                        avatar.src = String(item.avatar);
+                        avatar.alt = '';
+                        authorRow.append(avatar);
+                    } else {
+                        const fallbackAvatar = document.createElement('span');
+                        fallbackAvatar.className = 'announcement-avatar-fallback';
+                        fallbackAvatar.textContent = authorName.slice(0, 1).toUpperCase() || '🐱';
+                        authorRow.append(fallbackAvatar);
+                    }
+
+                    const authorDetails = document.createElement('div');
+                    const author = document.createElement('p');
+                    author.className = 'announcement-author-name';
+                    author.textContent = authorName;
+                    const title = document.createElement('h3');
+                    title.textContent = String(item.title || 'Announcement');
+                    authorDetails.append(author, title);
+                    authorRow.append(authorDetails);
+                    entry.append(authorRow);
+
+                    if (item.content) {
+                        const content = document.createElement('p');
+                        content.className = 'announcement-content';
+                        content.textContent = String(item.content);
+                        entry.append(content);
+                    }
+
+                    const images = Array.isArray(item.images) ? item.images : (item.image ? [item.image] : []);
+                    for (const imageUrl of images) {
+                        const image = document.createElement('img');
+                        image.className = 'announcement-image';
+                        image.src = String(imageUrl);
+                        image.alt = 'Image attached to announcement';
+                        entry.append(image);
+                    }
+                    announcementList.append(entry);
+                }
+                announcementStatus.hidden = true;
+            } catch (error) {
+                announcementStatus.textContent = 'Announcements could not be loaded. Please try again later.';
+            }
+        }
+
         announcementsToggle.addEventListener('click', () => {
             const isOpen = announcementsToggle.getAttribute('aria-expanded') === 'true';
             announcementsToggle.setAttribute('aria-expanded', String(!isOpen));
             announcementPanel.hidden = isOpen;
+            if (!isOpen) loadAnnouncements();
         });
 
         if (localStorage.getItem('kats-theme') === 'dark') {
