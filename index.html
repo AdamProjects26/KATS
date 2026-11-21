@@ -22,7 +22,7 @@
         }
 
         body.dark-mode {
-            --bg-main: #18141c;
+            --bg-main: #2C2534;
             --surface: #231e29;
             --surface-soft: #2e2736;
             --text-hero: #f5f3f7;
@@ -150,6 +150,51 @@
             font-family: 'Caveat', cursive, sans-serif;
             font-size: 2.5rem;
             font-weight: 700;
+            line-height: 1.25;
+        }
+        .server-count {
+            display: inline-flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 0.15rem;
+            margin-top: 1rem;
+            padding: 1rem 1.75rem;
+            min-width: 230px;
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            font-weight: 800;
+        }
+        .server-count-number {
+            color: var(--accent);
+            font-size: 2rem;
+            line-height: 1.15;
+        }
+        .server-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 0.75rem;
+        }
+        .server-age {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.15rem;
+            margin-top: 1rem;
+            padding: 1rem 1.75rem;
+            min-width: 230px;
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            font-weight: 800;
+        }
+        .server-age-number {
+            color: var(--accent);
+            font-size: 1.5rem;
             line-height: 1.25;
         }
 
@@ -327,6 +372,26 @@
             margin-top: 1.5rem;
         }
 
+        /* Artwork gallery */
+        .artwork-card {
+            text-align: center;
+        }
+        .artwork-image {
+            display: block;
+            width: min(100%, 720px);
+            max-height: 80vh;
+            object-fit: contain;
+            margin: 0 auto;
+            border-radius: 18px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+        .artwork-credit {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
         /* FAQ Accordion Section */
         .faq-list {
             display: flex;
@@ -405,6 +470,10 @@
     <main id="about" class="content">
         <div class="tagline-box">
             <p class="tagline">The home of silly cat decorations! Get updates on our latest decorations, banners and creations.</p>
+            <div class="server-stats">
+                <p class="server-count">People in the Server <span id="serverCount" class="server-count-number">119</span></p>
+                <p class="server-age">Server made on <span id="serverMade">08.11.2026</span> <span id="serverAge" class="server-age-number">13 days ago</span></p>
+            </div>
         </div>
 
         <div class="layout-grid">
@@ -581,11 +650,38 @@
                 </div>
             </aside>
         </div>
+
+        <section class="card artwork-card" aria-labelledby="artwork-heading">
+            <div class="section-header">
+                <h2 id="artwork-heading">ART WORK</h2>
+            </div>
+            <img class="artwork-image" src="artwork-riot.webp" alt="Colorful hand-drawn fantasy artwork by Riot">
+            <p class="artwork-credit">Art work by @riot.</p>
+        </section>
     </main>
 
     <script>
+        // Edit these two values to update the server information shown on the page.
+        const serverInfo = {
+            peopleInServer: 107,
+            serverMade: '08.11.2026'
+        };
+
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
+
+        document.getElementById('serverCount').textContent = serverInfo.peopleInServer.toLocaleString();
+        document.getElementById('serverMade').textContent = serverInfo.serverMade;
+
+        function updateServerAge(dateText) {
+            const [day, month, year] = dateText.split('.').map(Number);
+            const serverCreated = new Date(Date.UTC(year, month - 1, day));
+            const todayUtc = new Date();
+            todayUtc.setUTCHours(0, 0, 0, 0);
+            const daysSinceCreated = Math.max(0, Math.floor((todayUtc - serverCreated) / 86400000));
+            document.getElementById('serverAge').textContent = `${daysSinceCreated} ${daysSinceCreated === 1 ? 'day' : 'days'} ago`;
+        }
+        updateServerAge(serverInfo.serverMade);
 
         if (localStorage.getItem('kats-theme') === 'dark') {
             body.classList.add('dark-mode');
