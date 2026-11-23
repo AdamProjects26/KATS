@@ -1,5 +1,44 @@
 [
   {
+    "id": "kats-banner-event-2026-11-23",
+    "title": "KATS Banner Event",
+    "author": "alonis.",
+    "author_id": "3b92b5a9-8291-4715-80e4-26644f610387",
+    "avatar": "alonis.png",
+    "content": "@everyone KATS banner event is overdue due to not much work done. Congratulations to @Call_Me_Clover_..Or_Gay.. for winning the competition! Your work will now be our banner as a reward for being the only one participating, plus, you will also be given the @Artist role.\n\nIf you have artwork related to the server, send it in #・art or DM @alonis or @MalnourishedPot. Thank you :)",
+    "images": [
+      "announcement-banner-event.png"
+    ],
+    "created_at": "2026-11-23T03:49:00Z",
+    "source": "website"
+  },
+  {
+    "id": "server-inactive-2026-11-23",
+    "title": "I'm not gonna be active...",
+    "author": "MalnourishedPot",
+    "author_id": "6aa68c23-6e22-4994-b1de-9933046e47e1",
+    "avatar": "MalnourishedPot.gif",
+    "content": "For a while prolly",
+    "images": [
+      "announcement-inactive.png"
+    ],
+    "created_at": "2026-11-23T02:58:00Z",
+    "source": "website"
+  },
+  {
+    "id": "top-100-yapper-2026-11-23",
+    "title": "We're so close to being in the top 100 servers in Yapper!",
+    "author": "alonis.",
+    "author_id": "3b92b5a9-8291-4715-80e4-26644f610387",
+    "avatar": "alonis.png",
+    "content": "@everyone We're so close to being in the top 100 servers in Yapper! Statistically, we need 48 members to join so we can make it into the top 100. Please invite people from as many servers and DMs as possible. Thank you! 🐈",
+    "images": [
+      "announcement-server-top-100.png"
+    ],
+    "created_at": "2026-11-23T00:14:00Z",
+    "source": "website"
+  },
+  {
     "id": "website-advertising-1",
     "title": "1st Announcement: Website Advertising",
     "author": "alonis.",
@@ -10,19 +49,6 @@
       "announcement-kats-home.png"
     ],
     "created_at": "2026-11-21T00:00:00Z",
-    "source": "website"
-  },
-  {
-    "id": "kats-banner-event-2026-11-23",
-    "title": "KATS Banner Event",
-    "author": "alonis.",
-    "author_id": "3b92b5a9-8291-4715-80e4-26644f610387",
-    "avatar": "alonis.png",
-    "content": "Congratulations to @Call_Me_Clover_..Or_Gay.. for winning the competition! Your work will now be our banner as a reward for being the only one participating, plus, you will also be given the @Artist role.\n\nIf you have artwork related to the server, you can send it in #・art or DM @alonis or @MalnourishedPot. Thank you :)",
-    "images": [
-      "announcement-banner-event.png"
-    ],
-    "created_at": "2026-11-23T00:00:00Z",
     "source": "website"
   }
 ]
