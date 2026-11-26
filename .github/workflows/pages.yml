@@ -1,0 +1,61 @@
+name: Deploy KATS site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Prepare website files
+        run: |
+          mkdir -p _site
+          cp index.html announcements.json _site/
+          find . -maxdepth 1 -type f \( -iname '*.png' -o -iname '*.webp' -o -iname '*.gif' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.svg' -o -iname '*.ico' \) -exec cp -- {} _site/ \;
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment_first.outputs.page_url || steps.deployment_second.outputs.page_url || steps.deployment_third.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages (attempt 1)
+        id: deployment_first
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+
+      - name: Retry deployment (attempt 2)
+        id: deployment_second
+        if: ${{ steps.deployment_first.outcome == 'failure' }}
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+
+      - name: Retry deployment (attempt 3)
+        id: deployment_third
+        if: ${{ steps.deployment_first.outcome == 'failure' && steps.deployment_second.outcome == 'failure' }}
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+
+      - name: Fail if all deployment attempts failed
+        if: ${{ always() && steps.deployment_first.outcome == 'failure' && steps.deployment_second.outcome == 'failure' && steps.deployment_third.outcome == 'failure' }}
+        run: exit 1
