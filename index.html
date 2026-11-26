@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KATS!</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Handwriting font + clean readable font -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #f67738;
+            --surface: #fdfdfe;
+            --surface-soft: #fff6f1;
+            --text-hero: #fdfdfe;
+            --text-primary: #2b211c;
+            --text-secondary: #5c4b43;
+            --accent: #f67738;
+            --logo-filter: none;
+        }
+
+        body.dark-mode {
+            --bg-main: #2C2534;
+            --surface: #231e29;
+            --surface-soft: #2e2736;
+            --text-hero: #f5f3f7;
+            --text-primary: #f5f3f7;
+            --text-secondary: #c4bccd;
+            --accent: #f67738;
+            --logo-filter: brightness(0.88) contrast(1.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-hero);
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* Top-Right Dark / Light Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 100;
+            background-color: var(--surface);
+            color: var(--accent);
+            border: 2px solid rgba(0, 0, 0, 0.08);
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, background-color 0.25s ease, color 0.25s ease;
+        }
+        .theme-toggle:hover {
+            transform: translateY(-2px) scale(1.04);
+        }
+
+        /* Top Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+        }
+        .logo {
+            width: 240px;
+            height: 240px;
+            background-image: url('banner.webp');
+            background-color: var(--bg-main);
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            border-radius: 28px;
+            margin-bottom: 1rem;
+            filter: var(--logo-filter);
+            transition: filter 0.25s ease;
+            border: 0;
+            padding: 0;
+            appearance: none;
+            cursor: pointer;
+        }
+        .logo:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 6px;
+        }
+        body.dark-mode .logo {
+            background-image: url('dark.png');
+            background-color: var(--bg-main);
+        }
+        h1 {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--text-hero);
+            line-height: 1;
+            margin-bottom: 1.75rem;
+        }
+        .join-btn {
+            display: inline-block;
+            background-color: var(--surface);
+            color: var(--accent);
+            font-family: 'Caveat', cursive, sans-serif;
+            text-decoration: none;
+            font-size: 2rem;
+            font-weight: 700;
+            padding: 0.7rem 2.6rem;
+            border-radius: 9999px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease;
+        }
+        .join-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 1.5rem;
+            color: var(--text-hero);
+            text-decoration: none;
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 1.5rem;
+            opacity: 0.85;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .scroll-hint:hover {
+            opacity: 1;
+            transform: translateY(3px);
+        }
+
+        /* Scroll-Down Content */
+        .content {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 5rem;
+        }
+        .tagline-box {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .tagline {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+        .server-count {
+            display: inline-flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 0.15rem;
+            margin-top: 1rem;
+            padding: 1rem 1.75rem;
+            min-width: 230px;
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            font-weight: 800;
+        }
+        .server-count-number {
+            color: var(--accent);
+            font-size: 2rem;
+            line-height: 1.15;
+        }
+        .server-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 0.75rem;
+        }
+        .server-age {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.15rem;
+            margin-top: 1rem;
+            padding: 1rem 1.75rem;
+            min-width: 230px;
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            font-weight: 800;
+        }
+        .server-age-number {
+            color: var(--accent);
+            font-size: 1.5rem;
+            line-height: 1.25;
+        }
+        .announcements-toggle {
+            margin-top: 1rem;
+            border: 0;
+            border-radius: 9999px;
+            padding: 0.65rem 1.6rem;
+            background: var(--surface);
+            color: var(--accent);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            font: 700 1.2rem 'Caveat', cursive, sans-serif;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .announcements-toggle:hover {
+            transform: translateY(-2px);
+        }
+        .announcement-panel {
+            max-width: 760px;
+            margin: 1rem auto 0;
+            padding: 1.5rem;
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-primary);
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+        }
+        .announcement-panel > h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font: 700 2.2rem 'Caveat', cursive, sans-serif;
+        }
+        .announcement-entry + .announcement-entry {
+            border-top: 1px solid rgba(128, 128, 128, 0.25);
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+        }
+        .announcement-entry h3 {
+            margin-top: 0.1rem;
+            color: var(--accent);
+            font-size: 1.05rem;
+            line-height: 1.2;
+        }
+        .announcement-panel h2 {
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            font: 700 2rem 'Caveat', cursive, sans-serif;
+        }
+        .announcement-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .announcement-author img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .announcement-author-name {
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+        .announcement-panel p {
+            margin-bottom: 0.85rem;
+        }
+        .announcement-content {
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+        .announcement-avatar-fallback {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--surface-soft);
+            color: var(--accent);
+            font-weight: 800;
+        }
+        .announcement-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+        .cat-facts-dialog {
+            width: min(90vw, 560px);
+            max-height: 85vh;
+            overflow-y: auto;
+            margin: auto;
+            padding: 2rem;
+            border: 0;
+            border-radius: 24px;
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+        .cat-facts-dialog::backdrop {
+            background: rgba(16, 12, 20, 0.68);
+            backdrop-filter: blur(3px);
+        }
+        .cat-facts-dialog h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font: 700 2.5rem 'Caveat', cursive, sans-serif;
+            text-align: center;
+        }
+        .cat-facts-list {
+            display: grid;
+            gap: 0.8rem;
+            padding-left: 1.25rem;
+        }
+        .cat-facts-list li {
+            padding-left: 0.25rem;
+        }
+        .cat-facts-close {
+            display: block;
+            margin: 1.5rem auto 0;
+            border: 0;
+            border-radius: 9999px;
+            padding: 0.6rem 1.5rem;
+            background: var(--accent);
+            color: #fff;
+            font: 700 1.2rem 'Caveat', cursive, sans-serif;
+            cursor: pointer;
+        }
+
+        /* Two-Column Layout (Main + Sidebar) */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 330px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Card Containers */
+        .card {
+            background-color: var(--surface);
+            color: var(--text-primary);
+            border-radius: 28px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+            margin-bottom: 2.5rem;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .section-header h2 {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 3rem;
+            color: var(--accent);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+        .section-header p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+        }
+
+        /* Who Runs It Sidebar */
+        .sidebar-card {
+            background-color: var(--surface);
+            color: var(--text-primary);
+            border-radius: 28px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+            position: sticky;
+            top: 2rem;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+        .sidebar-card h2 {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 2.8rem;
+            color: var(--accent);
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 1.25rem;
+        }
+        .staff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+        .staff-item {
+            background-color: var(--surface-soft);
+            border-radius: 14px;
+            padding: 0.8rem 1rem;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0.85rem;
+            border-left: 4px solid var(--accent);
+            transition: background-color 0.25s ease;
+        }
+        .staff-item-with-avatar {
+            flex-direction: row;
+            align-items: center;
+            gap: 0.85rem;
+        }
+        .staff-avatar {
+            width: 52px;
+            height: 52px;
+            flex: 0 0 52px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .staff-details {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .staff-name {
+            font-weight: 800;
+            font-size: 0.98rem;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+        .role-badge {
+            align-self: flex-start;
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 0.2rem 0.65rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .role-owner {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+        .role-kats {
+            background-color: #ffedd5;
+            color: #ea580c;
+        }
+        .role-mod {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+        }
+        .role-web-manager {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        /* Rules Section */
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .rule-item {
+            background-color: var(--surface-soft);
+            border-left: 5px solid var(--accent);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            transition: background-color 0.25s ease;
+        }
+        .rule-item h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+            letter-spacing: 0.02em;
+        }
+        .rule-item p {
+            font-size: 0.98rem;
+            color: var(--text-primary);
+        }
+
+        .divider {
+            border: 0;
+            height: 2px;
+            background: rgba(246, 119, 56, 0.25);
+            margin: 2.25rem 0;
+        }
+
+        /* Moderation Section */
+        .moderation h2 {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 2.6rem;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+        .moderation > p {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .consequences-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        .consequences-list li {
+            background-color: var(--accent);
+            color: #fdfdfe;
+            font-weight: 700;
+            font-size: 0.92rem;
+            padding: 0.45rem 1rem;
+            border-radius: 9999px;
+        }
+        .mod-note {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .thanks {
+            font-family: 'Caveat', cursive, sans-serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        /* Artwork gallery */
+        .artwork-card {
+            text-align: center;
+        }
+        .artwork-image {
+            display: block;
+            width: min(100%, 720px);
+            max-height: 80vh;
+            object-fit: contain;
+            margin: 0 auto;
+            border-radius: 18px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+        }
+        .artwork-credit {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+        .artwork-submission-title {
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font: 700 2rem 'Caveat', cursive, sans-serif;
+        }
+
+        /* FAQ Accordion Section */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        details.faq-item {
+            background-color: var(--surface-soft);
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            border: 2px solid transparent;
+            transition: border-color 0.2s ease, background-color 0.25s ease;
+        }
+        details.faq-item[open] {
+            border-color: rgba(246, 119, 56, 0.35);
+        }
+        details.faq-item summary {
+            list-style: none;
+            cursor: pointer;
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            letter-spacing: 0.02em;
+        }
+        details.faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+        details.faq-item summary::after {
+            content: "⌄";
+            font-size: 1.4rem;
+            line-height: 1;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        details.faq-item[open] summary::after {
+            transform: rotate(180deg);
+        }
+        details.faq-item p {
+            margin-top: 0.65rem;
+            font-size: 0.98rem;
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 900px) {
+            .layout-grid {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-card {
+                position: static;
+            }
+        }
+        @media (max-width: 600px) {
+            .card {
+                padding: 1.75rem 1.25rem;
+            }
+            .tagline {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="themeBtn" class="theme-toggle" aria-label="Toggle dark or light mode">🌙 Dark</button>
+
+    <section class="hero">
+        <button id="catLogo" class="logo" type="button" aria-label="KATS cat logo. Double-click for cat fun facts." title="Double-click for cat fun facts"></button>
+        <h1>KATS!</h1>
+        <a href="https://yapin.gg/invite/KATS" target="_blank" rel="noopener noreferrer" class="join-btn">Join /kats</a>
+        <a href="#about" class="scroll-hint">Scroll down for info, rules &amp; FAQ ↓</a>
+    </section>
+
+    <dialog id="catFactsDialog" class="cat-facts-dialog" aria-labelledby="catFactsHeading">
+        <h2 id="catFactsHeading">🐾 Cat Fun Facts 🐾</h2>
+        <ul class="cat-facts-list">
+            <li>Cats see better than people in low light, but they still need some light to see.</li>
+            <li>A cat’s whiskers help it sense nearby objects and judge whether it can fit through a gap.</li>
+            <li>Cats see a more limited range of colors than humans do.</li>
+            <li>Cats are most active around dawn and dusk. This is called being crepuscular.</li>
+            <li>Many cats sleep for around 12–18 hours a day.</li>
+            <li>A cat can turn each ear toward a different sound, and its ears can rotate widely.</li>
+            <li>Each cat ear has 32 muscles.</li>
+            <li>A cat’s ears can help show how it is feeling. Flattened ears can mean it feels scared or stressed.</li>
+            <li>Most cats have 24 whiskers on their cheeks, usually 12 on each side.</li>
+            <li>Whiskers can sense tiny movements in the air.</li>
+            <li>Whiskers help cats judge whether a narrow opening is wide enough to pass through.</li>
+            <li>Cats have scent glands around their cheeks and paws.</li>
+            <li>When cats scratch, they leave both visible marks and scent signals.</li>
+            <li>A purr often means a cat is content, but cats may also purr when stressed or in pain.</li>
+            <li>Kittens are born with their eyes and ear canals closed; these open as they grow.</li>
+            <li>Cats use scent and body language to communicate with other cats.</li>
+            <li>Many pet cats use meows especially to communicate with people.</li>
+            <li>Cats have a reflective layer in their eyes that helps them see in dim light.</li>
+            <li>Cats have fewer types of color-sensing cone cells than people do.</li>
+        </ul>
+        <button id="closeCatFacts" class="cat-facts-close" type="button">Got it!</button>
+    </dialog>
+
+    <main id="about" class="content">
+        <div class="tagline-box">
+            <p class="tagline">The home of silly cat decorations! Get updates on our latest decorations, banners and creations.</p>
+            <div class="server-stats">
+                <p class="server-count">People in the Server <span id="serverCount" class="server-count-number">119</span></p>
+                <p class="server-age">Server made on <span id="serverMade">08.11.2026</span> <span id="serverAge" class="server-age-number">13 days ago</span></p>
+            </div>
+            <button id="announcementsToggle" class="announcements-toggle" type="button" aria-expanded="false" aria-controls="announcementPanel">Announcements</button>
+            <section id="announcementPanel" class="announcement-panel" aria-labelledby="announcementsHeading" hidden>
+                <h2 id="announcementsHeading">Announcements</h2>
+                <div id="announcementList" aria-live="polite"></div>
+                <p id="announcementStatus" class="mod-note">Loading announcements…</p>
+            </section>
+        </div>
+
+        <div class="layout-grid">
+            <div>
+                <div class="card">
+                    <div class="section-header">
+                        <h2>KATS! — SERVER RULES</h2>
+                        <p>Welcome to KATS! Please read and follow all the rules to keep our community friendly and welcoming.</p>
+                    </div>
+
+                    <div class="rules-list">
+                        <div class="rule-item">
+                            <h3>01. RESPECT EVERYONE</h3>
+                            <p>Treat all members with respect. Bullying, harassment, discrimination and personal attacks are not tolerated.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>02. NO SPAM</h3>
+                            <p>Do not spam messages, emojis, stickers, reactions or repeatedly ping members.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>03. NO NSFW CONTENT</h3>
+                            <p>Keep all conversations and media appropriate for a general audience. No NSFW, explicit or inappropriate content.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>04. NO DRAMA</h3>
+                            <p>Avoid starting arguments, provoking members or bringing unnecessary drama into the community.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>05. RESPECT PRIVACY</h3>
+                            <p>Never share someone's personal information, private messages or photos without their permission.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>06. USE CHANNELS CORRECTLY</h3>
+                            <p>Keep conversations in their appropriate channels. Check channel descriptions before posting.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>07. NO BEGGING</h3>
+                            <p>Do not repeatedly beg for roles, promotions, permissions, Nitro or other benefits.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>08. LISTEN TO STAFF</h3>
+                            <p>Follow reasonable instructions from moderators and administrators. Do not argue with staff in public channels.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>09. NO MALICIOUS LINKS</h3>
+                            <p>Do not share suspicious links, scams, phishing attempts or harmful files.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>10. NO IMPERSONATION</h3>
+                            <p>Do not impersonate other members, staff or public figures to mislead others.</p>
+                        </div>
+
+                        <div class="rule-item">
+                            <h3>11. USE COMMON SENSE</h3>
+                            <p>Not everything can be covered by these rules. Be considerate and use your best judgement.</p>
+                        </div>
+                    </div>
+
+                    <hr class="divider">
+
+                    <div class="moderation">
+                        <h2>MODERATION &amp; CONSEQUENCES</h2>
+                        <p>Breaking the rules may result in:</p>
+                        <ul class="consequences-list">
+                            <li>Verbal warning</li>
+                            <li>Official warning</li>
+                            <li>Timeout</li>
+                            <li>Kick</li>
+                            <li>Temporary ban</li>
+                            <li>Permanent ban</li>
+                        </ul>
+                        <p class="mod-note">Staff reserve the right to take appropriate action depending on the severity of the situation.</p>
+                        <p class="mod-note">By being a member in KATS, you agree to follow these rules.</p>
+                        <p class="thanks">Thanks for join KATS! ♡</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="section-header">
+                        <h2>FREQUENTLY ASKED QUESTIONS</h2>
+                        <p>Click a question below to see the answer!</p>
+                    </div>
+
+                    <div class="faq-list">
+                        <details class="faq-item" open>
+                            <summary>IS THIS THE OFFICIAL SERVER FOR SILLY CAT DECORATIONS?</summary>
+                            <p>Yes! This is the official home of Silly Cat Decorations, where you can find updates on our latest profile decorations, banners, effects and other creations!</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>WHAT IS KATS?</summary>
+                            <p>KATS is a community server where people can chat, make friends and keep up with our latest silly cat decorations!</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>WHO ARE THE OWNERS?</summary>
+                            <p>The owners are alonis. and MalnourishedPot.</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>HOW DO I GET UPDATES?</summary>
+                            <p>Keep an eye on our announcement channels to see when new decorations and creations are released!</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>HOW DO I GET NOTIFICATION PINGS?</summary>
+                            <p>Click the server name, head to Ping Roles, and claim whichever notification roles you'd like!</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>CAN I SUGGEST NEW DECORATIONS?</summary>
+                            <p>Of course! Share your ideas and suggestions with us. We love hearing new ideas!</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>CAN I INVITE MY FRIENDS?</summary>
+                            <p>Absolutely! Feel free to invite your friends and help grow the KATS community.</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>HOW DO I BECOME STAFF?</summary>
+                            <p>Keep an eye out for staff application announcements. Applications may open when positions become available.</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>CAN I PROMOTE MY OWN SERVER?</summary>
+                            <p>Of course! But please do not spam the same advertisement or any other advertisements, just one at a time.</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary>WHO DO I CONTACT IF I NEED HELP?</summary>
+                            <p>You can contact a moderator or open a support ticket if you need assistance.</p>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="sidebar-card">
+                <h2>Who Runs It</h2>
+                <div class="staff-list">
+                    <div class="staff-item">
+                        <img class="staff-avatar" src="alonis.png" alt="alonis.">
+                        <div class="staff-details">
+                            <span class="staff-name">alonis.</span>
+                            <span class="role-badge role-owner">👑 Owner</span>
+                        </div>
+                    </div>
+
+                    <div class="staff-item">
+                        <img class="staff-avatar" src="MalnourishedPot.gif" alt="MalnourishedPot">
+                        <div class="staff-details">
+                            <span class="staff-name">MalnourishedPot</span>
+                            <span class="role-badge role-kats">🛡️ KATS!</span>
+                        </div>
+                    </div>
+
+                    <div class="staff-item staff-item-with-avatar">
+                        <img class="staff-avatar" src="adamdev.webp" alt="AdamDev">
+                        <div class="staff-details">
+                            <span class="staff-name">AdamDev</span>
+                            <span class="role-badge role-web-manager">💻 Web Manager</span>
+                        </div>
+                    </div>
+
+                    <div class="staff-item">
+                        <img class="staff-avatar" src="~%20!%20M1LKYBUNNYCH0C0%20!%20~.webp" alt="~ ! M1LKYBUNNYCH0C0 ! ~">
+                        <div class="staff-details">
+                            <span class="staff-name">~ ! M1LKYBUNNYCH0C0 ! ~</span>
+                            <span class="role-badge role-mod">🛡️ Moderator</span>
+                        </div>
+                    </div>
+
+                    <div class="staff-item">
+                        <img class="staff-avatar" src="LAWLESS.webp" alt="🕶️ LAWLESS ✦">
+                        <div class="staff-details">
+                            <span class="staff-name">🕶️ LAWLESS ✦</span>
+                            <span class="role-badge role-mod">🛡️ Moderator</span>
+                        </div>
+                    </div>
+
+                    <div class="staff-item">
+                        <img class="staff-avatar" src="JustaKrill.png" alt="JustaKrill">
+                        <div class="staff-details">
+                            <span class="staff-name">JustaKrill</span>
+                            <span class="role-badge role-mod">🛡️ Moderator</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <section class="card artwork-card" aria-labelledby="artwork-heading">
+            <div class="section-header">
+                <h2 id="artwork-heading">ART WORK</h2>
+            </div>
+            <img class="artwork-image" src="artwork-riot.webp" alt="Colorful hand-drawn fantasy artwork by Riot">
+            <p class="artwork-credit">Art work by @riot.</p>
+            <h3 class="artwork-submission-title">Banner submission #1</h3>
+            <img class="artwork-image" src="artwork-Call_Me_Clover_..Or_Gay..png" alt="Orange KATS banner with two cartoon cats">
+            <p class="artwork-credit">Art work by @Call_Me_Clover_..Or_Gay..</p>
+        </section>
+    </main>
+
+    <script>
+        // Edit these two values to update the server information shown on the page.
+        const serverInfo = {
+            peopleInServer: 119,
+            serverMade: '08.11.2026'
+        };
+
+        const themeBtn = document.getElementById('themeBtn');
+        const body = document.body;
+
+        const catLogo = document.getElementById('catLogo');
+        const catFactsDialog = document.getElementById('catFactsDialog');
+        catLogo.addEventListener('dblclick', () => catFactsDialog.showModal());
+        catLogo.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                catFactsDialog.showModal();
+            }
+        });
+        document.getElementById('closeCatFacts').addEventListener('click', () => catFactsDialog.close());
+
+        document.getElementById('serverCount').textContent = serverInfo.peopleInServer.toLocaleString();
+        document.getElementById('serverMade').textContent = serverInfo.serverMade;
+
+        function updateServerAge(dateText) {
+            const [day, month, year] = dateText.split('.').map(Number);
+            const serverCreated = new Date(Date.UTC(year, month - 1, day));
+            const todayUtc = new Date();
+            todayUtc.setUTCHours(0, 0, 0, 0);
+            const daysSinceCreated = Math.max(0, Math.floor((todayUtc - serverCreated) / 86400000));
+            document.getElementById('serverAge').textContent = `${daysSinceCreated} ${daysSinceCreated === 1 ? 'day' : 'days'} ago`;
+        }
+        updateServerAge(serverInfo.serverMade);
+
+        const announcementsToggle = document.getElementById('announcementsToggle');
+        const announcementPanel = document.getElementById('announcementPanel');
+        const announcementList = document.getElementById('announcementList');
+        const announcementStatus = document.getElementById('announcementStatus');
+
+        async function loadAnnouncements() {
+            announcementStatus.hidden = false;
+            announcementStatus.textContent = 'Loading announcements…';
+            announcementList.replaceChildren();
+
+            try {
+                const response = await fetch(`announcements.json?updated=${Date.now()}`, { cache: 'no-store' });
+                if (!response.ok) throw new Error('Could not load announcements');
+                const announcements = await response.json();
+                if (!Array.isArray(announcements) || announcements.length === 0) {
+                    announcementStatus.textContent = 'No announcements yet.';
+                    return;
+                }
+
+                const newestFirst = [...announcements].sort((a, b) => {
+                    const timeA = Date.parse(a.created_at || '') || 0;
+                    const timeB = Date.parse(b.created_at || '') || 0;
+                    return timeB - timeA;
+                });
+
+                for (const item of newestFirst) {
+                    const entry = document.createElement('article');
+                    entry.className = 'announcement-entry';
+
+                    const authorRow = document.createElement('div');
+                    authorRow.className = 'announcement-author';
+                    const authorName = String(item.author || 'KATS member');
+                    if (item.avatar) {
+                        const avatar = document.createElement('img');
+                        avatar.src = String(item.avatar);
+                        avatar.alt = '';
+                        authorRow.append(avatar);
+                    } else {
+                        const fallbackAvatar = document.createElement('span');
+                        fallbackAvatar.className = 'announcement-avatar-fallback';
+                        fallbackAvatar.textContent = authorName.slice(0, 1).toUpperCase() || '🐱';
+                        authorRow.append(fallbackAvatar);
+                    }
+
+                    const authorDetails = document.createElement('div');
+                    const author = document.createElement('p');
+                    author.className = 'announcement-author-name';
+                    author.textContent = authorName;
+                    const title = document.createElement('h3');
+                    title.textContent = String(item.title || 'Announcement');
+                    authorDetails.append(author, title);
+                    authorRow.append(authorDetails);
+                    entry.append(authorRow);
+
+                    if (item.content) {
+                        const content = document.createElement('p');
+                        content.className = 'announcement-content';
+                        content.textContent = String(item.content);
+                        entry.append(content);
+                    }
+
+                    const images = Array.isArray(item.images) ? item.images : (item.image ? [item.image] : []);
+                    for (const imageUrl of images) {
+                        const image = document.createElement('img');
+                        image.className = 'announcement-image';
+                        image.src = String(imageUrl);
+                        image.alt = 'Image attached to announcement';
+                        entry.append(image);
+                    }
+                    announcementList.append(entry);
+                }
+                announcementStatus.hidden = true;
+            } catch (error) {
+                announcementStatus.textContent = 'Announcements could not be loaded. Please try again later.';
+            }
+        }
+
+        announcementsToggle.addEventListener('click', () => {
+            const isOpen = announcementsToggle.getAttribute('aria-expanded') === 'true';
+            announcementsToggle.setAttribute('aria-expanded', String(!isOpen));
+            announcementPanel.hidden = isOpen;
+            if (!isOpen) loadAnnouncements();
+        });
+
+        if (localStorage.getItem('kats-theme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeBtn.textContent = '☀️ Light';
+        }
+
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            themeBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+            localStorage.setItem('kats-theme', isDark ? 'dark' : 'light');
+        });
+    </script>
+</body>
+</html>
+
